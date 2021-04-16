@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<?php 
+session_start(); 
+?> 
+<script>
+
+
+function checkLogIn(){
+	if (sessionStorage.getItem('LogInStatus') == "true") {
+	document.getElementById("LogInButton").innerHTML = "Log Out";
+	document.getElementById("RegisterButton").innerHTML = "Profile";
+	document.getElementById("UserPost").style.display = "block";
+	
+	var phpget = new XMLHttpRequest();
+	phpget.open("POST", "getposts.php", true);
+	
+	phpget.onreadystatechange = function() {
+		if (phpget.readyState == 4 && phpget.status == 200) {
+			var headerEle = document.getElementById("masthead")
+			headerEle.innerHTML = sessionStorage.getItem('Topic');
+			
+			console.log(this.response)
+			var topics = document.getElementById("posts")
+			topics.innerHTML = '';
+		
+			topicsData = JSON.parse(this.response);
+		
+			var index;
+			for (index = 0; index < topicsData.length; ++index) {
+		
+				var newEntry = document.createElement('div');
+				newEntry.className = "Topic";
+				
+				var pfp = document.createElement("IMG");
+				pfp.setAttribute("src", "pfp/" + topicsData[index].pfp + ".jpg");
+				pfp.setAttribute("width", "32");
+				pfp.setAttribute("height", "32");
+				newEntry.appendChild(pfp);
+				
+				var header = document.createElement('h1');
+				header.innerHTML = topicsData[index].user; 
+				newEntry.appendChild(header);
+	
+				var br = document.createElement('br');
+				newEntry.appendChild(br);
+				
+				var date = document.createElement('p');
+				date.innerHTML = topicsData[index].content; 
+				newEntry.appendChild(date);
+				
+				topics.appendChild(newEntry);  
+			}
+		}
+	}
+	var topicdata = new FormData;
+	topicdata.append('Topic', sessionStorage.getItem('Topic'));
+	phpget.send(topicdata);
+	}
+}
+
+</script>
+
+
+<html lang = "en">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="css/MainCSS.css" rel="stylesheet">
+	<meta http-equiv="refresh" content="300">
+	<title>Project</title>
+</head>
+<body onload="checkLogIn()">
+
+<script>
+setInterval(function() {
+	var phpget = new XMLHttpRequest();
+	phpget.open("POST", "getposts.php", true);
+	
+	phpget.onreadystatechange = function() {
+		if (phpget.readyState == 4 && phpget.status == 200) {
+			var headerEle = document.getElementById("masthead")
+			headerEle.innerHTML = sessionStorage.getItem('Topic');
+			
+			console.log(this.response)
+			var topics = document.getElementById("posts")
+			topics.innerHTML = '';
+		
+			topicsData = JSON.parse(this.response);
+		
+			var index;
+			for (index = 0; index < topicsData.length; ++index) {
+		
+				var newEntry = document.createElement('div');
+				newEntry.className = "Topic";
+				
+				var pfp = document.createElement("IMG");
+				pfp.setAttribute("src", "pfp/" + topicsData[index].pfp + ".jpg");
+				pfp.setAttribute("width", "32");
+				pfp.setAttribute("height", "32");
+				newEntry.appendChild(pfp);
+				
+				var header = document.createElement('h1');
+				header.innerHTML = topicsData[index].user; 
+				newEntry.appendChild(header);
+	
+				var br = document.createElement('br');
+				newEntry.appendChild(br);
+				
+				var date = document.createElement('p');
+				date.innerHTML = topicsData[index].content; 
+				newEntry.appendChild(date);
+				
+				topics.appendChild(newEntry);  
+			}
+		}
+	}
+	var topicdata = new FormData;
+	topicdata.append('Topic', sessionStorage.getItem('Topic'));
+	phpget.send(topicdata);
+}, 2000); 
+				
+				
+function AJAXLogIn() {
+		var formData = new FormData(document.getElementById("LogInForm"))
+		var phpSend = new XMLHttpRequest();
+		phpSend.open("POST", "logIn.php", true);
+	
+		phpSend.onreadystatechange = function() {
+			if (this.response == 1) {
+				document.getElementById("LogInButton").innerHTML = "Log Out";
+				document.getElementById("RegisterButton").innerHTML = "Profile";
+				sessionStorage.setItem('LogInStatus', true);
+			}else{
+				document.getElementById("LogInButton").innerHTML = "Log In";
+			}
+					console.log(this.response)
+		};
+	
+		phpSend.send(formData);
+	
+		CloseLogin()
+	
+		return false
+}
+
+
+function AJAXRegister() {
+		if (document.getElementById("password1").value !== document.getElementById("password2").value) {
+			alert("Passwords do not match");
+		return false
+		}
+		
+		var formData = new FormData(document.getElementById("RegisterForm"))
+		var phpSend = new XMLHttpRequest();
+		phpSend.open("POST", "register.php", true);
+	
+		phpSend.onreadystatechange = function() {
+			if (this.response == "UserExists") {
+				alert('A user with this username or email already exists!');
+			}
+			if (this.response == 1) {
+				document.getElementById("LogInButton").innerHTML = "Log Out";
+				document.getElementById("RegisterButton").innerHTML = "Profile";
+				sessionStorage.setItem('LogInStatus', true);
+			}else{
+				document.getElementById("LogInButton").innerHTML = "Log In";
+			}
+				
+		};
+		
+		CloseRegister()
+		phpSend.send(formData);
+
+		return false
+}
+
+function AJAXSendPost() {
+		var formData = new FormData(document.getElementById("Userform"))
+		var phpSend = new XMLHttpRequest();
+		phpSend.open("POST", "createpost.php", true);
+	
+		phpSend.onreadystatechange = function() {
+			console.log(this.response)
+
+		};
+		formData.append('Topic', sessionStorage.getItem('Topic'));
+		phpSend.send(formData);
+
+		return false
+}
+
+function openLogin() {
+	if (sessionStorage.getItem("LogInStatus") == "false"){
+		document.getElementById("LogIn").style.display = "block";
+		document.getElementById("Register").style.display = "none";
+	}else{
+		sessionStorage.setItem('LogInStatus', false);
+		document.getElementById("LogInButton").innerHTML = "Log In";
+		document.getElementById("RegisterButton").innerHTML = "Register";
+		
+		var phpSend = new XMLHttpRequest();
+		phpSend.open("POST", "logIn.php", true);
+		phpSend.send({});
+	}
+}
+
+function CloseLogin() {
+	document.getElementById("LogIn").style.display = "none";
+}
+
+function openRegister() {
+	if (sessionStorage.getItem("LogInStatus") == "false"){
+		document.getElementById("Register").style.display = "block";
+		document.getElementById("LogIn").style.display = "none";
+	}else{
+		window.location.href = "Profile.php";
+	}
+}
+
+function CloseRegister() {
+  document.getElementById("Register").style.display = "none";
+}
+
+</script>
+
+<div class = "topNavBar">
+	<a href = "MainPage.html">Home</a>
+	<div class="topNavSearch">
+		<form action="">
+			<input type="text" placeholder="Search.." name="search">
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+	
+	<div class="topNavBarRight">
+		<button id = "LogInButton" class="LogIn" onclick="openLogin()">Log In</button>
+		<button id = "RegisterButton" class="Register" onclick="openRegister()">Register</button>
+	</div>
+</div>
+
+<div id="LogIn">
+  <form class="popUp" id = "LogInForm" onsubmit="return AJAXLogIn()">
+    <h1>Login</h1>
+
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
+
+    <button type="submit" class="popUp">Login</button>
+    <button type="button" class="popUp popUpCancel" onclick="CloseLogin()">Close</button>
+  </form>
+</div>
+
+<div id="Register">
+  <form class="popUp" id = "RegisterForm" onsubmit="return AJAXRegister()">
+    <h1>Register</h1>
+
+	<label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" id = "password1" required>
+
+	<label for="passwordConfirm"><b>Confirm Password</b></label>
+    <input type="password" placeholder="Reenter Password" name="passwordConfirm" id = "password2" required>
+
+    <button type="submit" class="popUp">Register</button>
+    <button type="button" class="popUp popUpCancel" onclick="CloseRegister()">Close</button>
+  </form>
+</div>
+
+<div id="main">
+	<header>
+		<h1 id="masthead">My Discussion Forum</h1>
+	</header>
+
+	<article id="posts">
+	</article>
+	
+	<div id="UserPost">
+		<form class="popUp" id = "Userform" onsubmit="return AJAXSendPost()">
+			<textarea id="userpost" name="userpost" rows="4" ></textarea>
+			<br><br>
+			<button type="submit" class="popUp">Post Reply</button>
+		</form>
+	</div>
+</div>
+
+<footer>
+   <div class="footer-related">
+      <h2>My Discussion Forum</h2>
+   </div>
+   <div class="footer-section">
+      <h2>Contact Us</h2>
+   </div>
+</footer>
+
+</body>
+</html>
+
+
+
+

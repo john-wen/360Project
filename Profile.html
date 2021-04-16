@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<?php 
+session_start(); 
+?> 
+<script>
+
+
+function checkLogIn(){
+	if (sessionStorage.getItem('LogInStatus') == "true") {
+	document.getElementById("LogInButton").innerHTML = "Log Out";
+	document.getElementById("RegisterButton").innerHTML = "Profile";
+	}
+}
+
+</script>
+
+
+<html lang = "en">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link href="css/MainCSS.css" rel="stylesheet">
+	<title>Project</title>
+</head>
+<body onload="checkLogIn()">
+
+<script>
+
+function AJAXLogIn() {
+		var formData = new FormData(document.getElementById("LogInForm"))
+		var phpSend = new XMLHttpRequest();
+		phpSend.open("POST", "logIn.php", true);
+	
+		phpSend.onreadystatechange = function() {
+			if (this.response == 1) {
+				document.getElementById("LogInButton").innerHTML = "Log Out";
+				document.getElementById("RegisterButton").innerHTML = "Profile";
+				sessionStorage.setItem('LogInStatus', true);
+			}else{
+				document.getElementById("LogInButton").innerHTML = "Log In";
+			}
+					console.log(this.response)
+		};
+	
+		phpSend.send(formData);
+	
+		CloseLogin()
+	
+		return false
+}
+
+function AJAXRegister() {
+		var formData = new FormData(document.getElementById("RegisterForm"))
+		var phpSend = new XMLHttpRequest();
+		phpSend.open("POST", "register.php", true);
+	
+		phpSend.onreadystatechange = function() {
+			console.log(this.response)
+		};
+	
+		phpSend.send(formData);
+
+		return false
+}
+
+function openLogin() {
+	if (sessionStorage.getItem("LogInStatus") == "false"){
+		document.getElementById("LogIn").style.display = "block";
+		document.getElementById("Register").style.display = "none";
+	}else{
+		sessionStorage.setItem('LogInStatus', false);
+		document.getElementById("LogInButton").innerHTML = "Log In";
+		document.getElementById("RegisterButton").innerHTML = "Register";
+		
+		var phpSend = new XMLHttpRequest();
+		phpSend.open("POST", "logIn.php", true);
+		phpSend.send({});
+	}
+}
+
+function CloseLogin() {
+  document.getElementById("LogIn").style.display = "none";
+}
+
+function openRegister() {
+	if (sessionStorage.getItem("LogInStatus") == "false"){
+		document.getElementById("Register").style.display = "block";
+		document.getElementById("LogIn").style.display = "none";
+	}else{
+		location.reload();
+	}
+}
+
+function CloseRegister() {
+  document.getElementById("Register").style.display = "none";
+}
+
+</script>
+
+<div class = "topNavBar">
+	<a href = "MainPage.html">Home</a>
+	<div class="topNavSearch">
+		<form action="">
+			<input type="text" placeholder="Search.." name="search">
+			<button type="submit">Submit</button>
+		</form>
+	</div>
+	
+	<div class="topNavBarRight">
+		<button id = "LogInButton" class="LogIn" onclick="openLogin()">Log In</button>
+		<button id = "RegisterButton" class="Register" onclick="openRegister()">Register</button>
+	</div>
+</div>
+
+<div id="LogIn">
+  <form class="popUp" id = "LogInForm" onsubmit="return AJAXLogIn()">
+    <h1>Login</h1>
+
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
+
+    <button type="submit" class="popUp">Login</button>
+    <button type="button" class="popUp popUpCancel" onclick="CloseLogin()">Close</button>
+  </form>
+</div>
+
+<div id="Register">
+  <form class="popUp" id = "RegisterForm" onsubmit="return AJAXRegister()">
+    <h1>Register</h1>
+
+	<label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required>
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
+
+	<label for="passwordConfirm"><b>Confirm Password</b></label>
+    <input type="password" placeholder="Reenter Password" name="passwordConfirm" required>
+
+    <button type="submit" class="popUp">Login</button>
+    <button type="button" class="popUp popUpCancel" onclick="CloseRegister()">Close</button>
+  </form>
+</div>
+
+<div id="main">
+	<header id="masthead">
+	<?php
+		echo "<h2>PHP is Fun!</h2>"; ?>
+	
+	</header>
+
+	<article id="right-sidebar" style="height:auto;">
+	    <div class = "pfp">
+			<figure>
+				<img src="pfp/Default.jpg" style="width:100%;height:auto;" />
+			</figure>
+		</div>
+	</article>
+
+	<article id="center">
+	    <h2>Column 1</h2>
+    <p>Some text..</p>
+	</article>
+</div>
+
+<footer>
+   <div class="footer-related">
+      <h2>My Discussion Forum</h2>
+   </div>
+   <div class="footer-section">
+      <h2>Contact Us</h2>
+   </div>
+</footer>
+
+</body>
+</html>
+
+
+
+
