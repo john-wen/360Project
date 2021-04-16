@@ -1,4 +1,4 @@
-/* general CSS */
+
 body {
 	margin:0;
 	font-family: Tahoma, Helvetica, sans-serif;
@@ -81,6 +81,8 @@ footer h2 {
 }
 
 
+/* top nav bar */
+
 .topNavBar {
 	overflow: hidden;
 	background-color: #B3B8BF;
@@ -129,6 +131,9 @@ footer h2 {
 	color: black;
 }
 
+
+/* database topics and posts */
+
 .Topic {
 	width: 90%;
 	height: auto;
@@ -157,19 +162,6 @@ footer h2 {
 	margin-top: 60px;
 }
 
-
-#LogIn, #Register {
-	display: none;
-	border: 3px solid #f1f1f1;
-	position: fixed;
-	top:  50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	
-	max-width: 300px;
-	padding: 15px;
-	background-color: white;
-}
 
 #posts {
 	height: 800px;
@@ -207,6 +199,20 @@ footer h2 {
 	width: 85%;
 	margin: 2em 5em 2em 5em;
 	padding: 0;
+}
+
+/* log in and register */
+#LogIn, #Register {
+	display: none;
+	border: 3px solid #f1f1f1;
+	position: fixed;
+	top:  50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	
+	max-width: 300px;
+	padding: 15px;
+	background-color: white;
 }
 
 .popUp input[type=text], .popUp input[type=password] {

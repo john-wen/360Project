@@ -24,98 +24,9 @@ function checkLogIn(){
 </head>
 <body onload="checkLogIn()">
 
+<script type="text/javascript" src="javascript.js"></script>
+
 <script>
-
-function AJAXLogIn() {
-		var formData = new FormData(document.getElementById("LogInForm"))
-		var phpSend = new XMLHttpRequest();
-		phpSend.open("POST", "logIn.php", true);
-	
-		phpSend.onreadystatechange = function() {
-			if (this.response == 1) {
-				document.getElementById("LogInButton").innerHTML = "Log Out";
-				document.getElementById("RegisterButton").innerHTML = "Profile";
-				sessionStorage.setItem('LogInStatus', true);
-			}else{
-				document.getElementById("LogInButton").innerHTML = "Log In";
-			}
-					console.log(this.response)
-		};
-	
-		phpSend.send(formData);
-	
-		CloseLogin()
-	
-		return false
-}
-
-
-function AJAXRegister() {
-		if (document.getElementById("password1").value !== document.getElementById("password2").value) {
-			alert("Passwords do not match");
-		return false
-		}
-		
-		var formData = new FormData(document.getElementById("RegisterForm"))
-		var phpSend = new XMLHttpRequest();
-		phpSend.open("POST", "register.php", true);
-	
-		phpSend.onreadystatechange = function() {
-			if (this.response == "UserExists") {
-				alert('A user with this username or email already exists!');
-			}
-			if (this.response == 1) {
-				document.getElementById("LogInButton").innerHTML = "Log Out";
-				document.getElementById("RegisterButton").innerHTML = "Profile";
-				sessionStorage.setItem('LogInStatus', true);
-			}else{
-				document.getElementById("LogInButton").innerHTML = "Log In";
-			}
-				
-		};
-		
-		CloseRegister()
-		phpSend.send(formData);
-
-		return false
-}
-
-function AJAXUpdate() {
-		var formData = new FormData(document.getElementById("UpdateForm"))
-		var phpSend = new XMLHttpRequest();
-		phpSend.open("POST", "Update.php", true);
-	
-		phpSend.onreadystatechange = function() {
-			if (this.response == "UserExists") {
-				alert('A user with this username or email already exists!');
-			}
-				
-		};
-	
-		phpSend.send(formData);
-
-		return false
-}
-
-function openLogin() {
-	if (sessionStorage.getItem("LogInStatus") == "false"){
-		document.getElementById("LogIn").style.display = "block";
-		document.getElementById("Register").style.display = "none";
-	}else{
-		sessionStorage.setItem('LogInStatus', false);
-		document.getElementById("LogInButton").innerHTML = "Log In";
-		document.getElementById("RegisterButton").innerHTML = "Register";
-		
-		var phpSend = new XMLHttpRequest();
-		phpSend.open("POST", "logIn.php", true);
-		phpSend.send({});
-	}
-}
-
-function CloseLogin() {
-  document.getElementById("LogIn").style.display = "none";
-}
-
 function openRegister() {
 	if (sessionStorage.getItem("LogInStatus") == "false"){
 		document.getElementById("Register").style.display = "block";
@@ -123,10 +34,6 @@ function openRegister() {
 	}else{
 		location.reload();
 	}
-}
-
-function CloseRegister() {
-  document.getElementById("Register").style.display = "none";
 }
 
 </script>
