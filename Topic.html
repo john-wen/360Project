@@ -12,6 +12,8 @@ function checkLogIn(){
 	document.getElementById("RegisterButton").innerHTML = "Profile";
 	document.getElementById("UserPost").style.display = "block";
 	
+	}
+	
 	var phpget = new XMLHttpRequest();
 	phpget.open("POST", "getposts.php", true);
 	
@@ -56,7 +58,6 @@ function checkLogIn(){
 	var topicdata = new FormData;
 	topicdata.append('Topic', sessionStorage.getItem('Topic'));
 	phpget.send(topicdata);
-	}
 }
 
 </script>
@@ -133,7 +134,7 @@ function AJAXLogIn() {
 			}else{
 				document.getElementById("LogInButton").innerHTML = "Log In";
 			}
-					console.log(this.response)
+			location.reload();
 		};
 	
 		phpSend.send(formData);
@@ -166,6 +167,7 @@ function AJAXRegister() {
 				document.getElementById("LogInButton").innerHTML = "Log In";
 			}
 				
+			location.reload();
 		};
 		
 		CloseRegister()
@@ -186,6 +188,8 @@ function AJAXSendPost() {
 		formData.append('Topic', sessionStorage.getItem('Topic'));
 		phpSend.send(formData);
 
+		alert('Reply Posted');
+
 		return false
 }
 
@@ -201,6 +205,7 @@ function openLogin() {
 		var phpSend = new XMLHttpRequest();
 		phpSend.open("POST", "logIn.php", true);
 		phpSend.send({});
+		location.reload();
 	}
 }
 

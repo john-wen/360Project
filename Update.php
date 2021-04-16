@@ -36,16 +36,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		}
 		
 		if ($valid == true) {
-			$sql = $connection->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
-			$sql -> bind_param("ss", $_POST["username"], $_POST["email"]);
-			$sql -> execute();
+			if (($_POST["username"] !== $_SESSION['username']) || ($_POST["email"] !== $_SESSION['email'])) {
+				$sql = $connection->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
+				$sql -> bind_param("ss", $_POST["username"], $_POST["email"]);
+				$sql -> execute();
 			
-			$results = mysqli_stmt_get_result($sql);
-			$resultNumber = $results->num_rows;
+				$results = mysqli_stmt_get_result($sql);
+				$resultNumber = $results->num_rows;
+				
+				if ($resultNumber > 0) {
+					echo "UserExists";
+				} else {
+					if ($hasImage == true) {
+						$sql = $connection->prepare("UPDATE users SET username = ?,pfp = ?, email = ?, password = ? WHERE username = ?");
+						$sql -> bind_param("sssss", $_POST['username'], $_POST['username'], $_POST['email'], $_POST['password'], $_SESSION['username']);
+						$sql -> execute();
+						$_SESSION['pfp'] = $_POST['username'];
+						$temp = explode(".", $_FILES["pfp"]["name"]);
+						$newfilename =  $_POST['username'] . '.' . end($temp);
+				
+						move_uploaded_file($_FILES["pfp"]["tmp_name"], $target_dir.$newfilename);
+					}else{
+						$sql = $connection->prepare("UPDATE users SET username = ?,pfp = 'Default', email = ?, password = ? WHERE username = ?");
+						$sql -> bind_param("ssss", $_POST['username'], $_POST['email'], $_POST['password'], $_SESSION['username']);
+						$sql -> execute();
+						$_SESSION['pfp'] = "Default";
+					}
 			
-			if ($resultNumber > 0) {
-				echo "UserExists";
-			} else {
+					$_SESSION['loggedin'] = true;
+					$_SESSION['username'] = $_POST["username"];
+					$_SESSION['password'] = $_POST["password"];
+					$_SESSION['email'] = $_POST['email'];
+				}
+			
+			mysqli_free_result($results);
+			
+			}else{
 				if ($hasImage == true) {
 					$sql = $connection->prepare("UPDATE users SET username = ?,pfp = ?, email = ?, password = ? WHERE username = ?");
 					$sql -> bind_param("sssss", $_POST['username'], $_POST['username'], $_POST['email'], $_POST['password'], $_SESSION['username']);
@@ -53,12 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					$_SESSION['pfp'] = $_POST['username'];
 					$temp = explode(".", $_FILES["pfp"]["name"]);
 					$newfilename =  $_POST['username'] . '.' . end($temp);
-				
+			
 					move_uploaded_file($_FILES["pfp"]["tmp_name"], $target_dir.$newfilename);
 				}else{
 					$sql = $connection->prepare("UPDATE users SET username = ?,pfp = 'Default', email = ?, password = ? WHERE username = ?");
 					$sql -> bind_param("ssss", $_POST['username'], $_POST['email'], $_POST['password'], $_SESSION['username']);
-					$sql -> execute();
+						$sql -> execute();
 					$_SESSION['pfp'] = "Default";
 				}
 			
@@ -66,9 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$_SESSION['username'] = $_POST["username"];
 				$_SESSION['password'] = $_POST["password"];
 				$_SESSION['email'] = $_POST['email'];
+
 			}
-			
-			mysqli_free_result($results);
 		}
 	}
 	

@@ -1,0 +1,238 @@
+/* general CSS */
+body {
+	margin:0;
+	font-family: Tahoma, Helvetica, sans-serif;
+	h1 1.8em
+	h2 1.2em
+	p, body 0.9em
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+body ::-webkit-scrollbar {
+	display: none;
+}
+
+h1 {
+	margin: 0 0 0 1em;
+}
+
+#masthead {
+	height: auto;
+	margin: 2em 5em 2em 5em;
+	padding: 0;
+	overflow: hidden;
+	background-color: #B3B8BF;
+}
+
+#right-sidebar {
+	margin: 0 2em 2em 5em;
+	width: -moz-calc(30% - 4em);
+	width: -webkit-calc(30% - 4em);
+	width: calc(30% - 4em);
+	float: left;
+	height: 800px;
+	overflow: scroll;
+	background-color: transparent;
+	padding: 1em 1em 1em 1em;
+}
+
+#center {
+	margin: 0 5em 2em 0;
+	width: -moz-calc(70% - 10em);
+	width: -webkit-calc(70% - 10em);
+	width: calc(70% - 10em);
+	float: left;
+	height: 830px;
+	overflow: scroll;
+	left: auto;
+	background-color: #B3B8BF;
+}
+
+
+footer {
+	background-color: #474747;
+	clear: left;
+	display: flex;
+	flex-direction: row
+}
+
+.footer-related {
+	margin: 0 2em 1em 2em;
+	width: -moz-calc(30% - 4em);
+	width: -webkit-calc(30% - 4em);
+	width: calc(30% - 4em);
+}
+
+.footer-section {
+	float: left;
+	margin: 0 5em 0 0;
+	width: -moz-calc(70% - 5em);
+	width: -webkit-calc(70% - 5em);
+	width: calc(70% - 5em);
+}
+
+footer div {
+	color: #bfbfbf;
+}
+
+footer h2 {
+	border-top: 1px solid #ff8800;
+}
+
+
+.topNavBar {
+	overflow: hidden;
+	background-color: #B3B8BF;
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+.topNavBar a, button {
+	background-color: #707C8B;
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 10px 10px;
+	text-decoration: none;
+	font-size: 25px;
+}
+
+.topNavBarRight {
+	float: right;
+}
+
+.topNavBar input[type=text] {
+	padding: 6px;
+	margin-left: 5em;
+	margin-top: 4px;
+	font-size: 25px;
+	border: none;
+	float: left;
+	text-align: center;
+}
+
+.topNavSearch button {
+	float: left;
+	padding: 6px;
+	margin-top: 4px;
+	background: #ddd;
+	font-size: 25px;
+	border: none;
+	cursor: pointer;
+}
+
+.topNavBar a:hover, button:hover {
+	background: #ddd;
+	color: black;
+}
+
+.Topic {
+	width: 90%;
+	height: auto;
+	background-color: #6C6C6C;
+	float: left;
+	margin: 2em 2em 2em 2em;
+}
+
+.Topic h1 {
+	display:inline-block;
+	margin-right:32px;
+	color: #f2f2f2;
+}
+
+.Topic p {
+	color: #f2f2f2;
+}
+
+.Topic button {
+	float: right;
+}
+
+
+#main {
+	padding: 16px;
+	margin-top: 60px;
+}
+
+
+#LogIn, #Register {
+	display: none;
+	border: 3px solid #f1f1f1;
+	position: fixed;
+	top:  50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	
+	max-width: 300px;
+	padding: 15px;
+	background-color: white;
+}
+
+#posts {
+	height: 800px;
+	margin: 2em 5em 2em 5em;
+	padding: 0;
+	overflow: scroll;
+	background-color: #B3B8BF;
+}
+
+#UserPost {
+	height: 200px;
+	margin: 2em 5em 2em 5em;
+	padding: 0;
+	overflow: scroll;
+	background-color: #B3B8BF;
+	display: none;
+}
+
+
+#topicpost {
+	margin: 0 5em 2em 0;
+	width: -moz-calc(70% - 10em);
+	width: -webkit-calc(70% - 10em);
+	width: calc(70% - 10em);
+	float: left;
+	height: 200px;
+	overflow: scroll;
+	left: auto;
+	background-color: #B3B8BF;
+	display: none;
+}
+
+
+#userpost, #usertopic {
+	width: 85%;
+	margin: 2em 5em 2em 5em;
+	padding: 0;
+}
+
+.popUp input[type=text], .popUp input[type=password] {
+  width: 90%;
+  padding: 15px;
+  margin: 5px 0px 25px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+.popUp input[type=text]:focus, .popUp input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.popUp .popUp {
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 1;
+}
+
+.popUp .popUpCancel {
+  background-color: red;
+}
